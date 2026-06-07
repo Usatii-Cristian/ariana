@@ -1,11 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { config, poze, motive, momente, scrisoare, final } from "./felicitare/data";
+import {
+  config,
+  poze,
+  pozaPrincipala,
+  motive,
+  momente,
+  scrisoare,
+  final,
+} from "./felicitare/data";
 import FloatingHearts from "./components/FloatingHearts";
 import Reveal from "./components/Reveal";
 import PhotoFrame from "./components/PhotoFrame";
-import MusicToggle from "./components/MusicToggle";
+import MusicBox from "./components/MusicBox";
 
 // Câte zile sunteți împreună
 function zileImpreuna(dataInceput) {
@@ -27,27 +35,38 @@ export default function Home() {
 
   return (
     <main className="relative overflow-hidden bg-gradient-to-b from-cream via-blush/40 to-cream">
-      <FloatingHearts count={20} />
-      <MusicToggle start={deschis} />
+      <FloatingHearts count={30} />
+      <MusicBox start={deschis} />
 
-      {/* ─── Intro: plicul care se deschide ─── */}
+      {/* ─── Intro: poza voastră + plic ─── */}
       {!deschis && (
-        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-b from-wine via-rose-deep to-rose px-6 text-center">
-          <div className="fade-up">
-            <p className="mb-4 font-script text-3xl text-white/90">pentru tine,</p>
-            <h1 className="mb-2 font-serif text-5xl font-semibold text-white sm:text-6xl">
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden px-6 text-center">
+          {/* fundal: poza principală, blurată */}
+          <div
+            className="absolute inset-0 scale-110 bg-cover bg-center blur-md brightness-50"
+            style={{ backgroundImage: `url('${pozaPrincipala}')` }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-wine/80 via-rose-deep/70 to-rose/80" />
+          <div className="fade-up relative z-10">
+            <p className="mb-4 font-script text-3xl text-white/90 sm:text-4xl">
+              pentru tine,
+            </p>
+            <h1 className="mb-3 font-serif text-6xl font-semibold text-white drop-shadow-lg sm:text-7xl">
               {config.numeIubita}
             </h1>
-            <p className="mb-10 font-serif text-lg italic text-white/80">
-              o mică surpriză te așteaptă...
+            <p className="mb-10 font-serif text-lg italic text-white/85">
+              o mică surpriză te așteaptă... 💌
             </p>
             <button
               onClick={() => setDeschis(true)}
-              className="group relative inline-flex items-center gap-3 rounded-full bg-white px-8 py-4 font-serif text-lg font-medium text-rose-deep shadow-xl transition hover:scale-105"
+              className="group relative inline-flex items-center gap-3 rounded-full bg-white px-8 py-4 font-serif text-lg font-medium text-rose-deep shadow-2xl transition hover:scale-105"
             >
               <span className="text-2xl">💌</span>
               Deschide felicitarea
             </button>
+            <p className="mt-6 font-serif text-sm text-white/70">
+              🎵 cu sonor — dă-i drumul tare
+            </p>
           </div>
         </div>
       )}
@@ -70,8 +89,28 @@ export default function Home() {
           </p>
         </Reveal>
 
+        {/* poza principală, mare, în ramă */}
+        <Reveal delay={420}>
+          <div className="relative mt-12">
+            <span className="beat absolute -top-5 left-1/2 z-20 -translate-x-1/2 text-4xl drop-shadow">
+              ❤️
+            </span>
+            <div className="rotate-[-2deg] rounded-[3px] bg-white p-4 pb-6 shadow-[0_30px_60px_-15px_rgba(122,31,61,0.5)] ring-1 ring-black/5 transition-transform duration-500 hover:rotate-0">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={pozaPrincipala}
+                alt="Noi doi"
+                className="h-auto w-[16rem] rounded-[2px] object-cover sm:w-[20rem]"
+              />
+              <p className="pt-3 font-script text-3xl text-rose-deep">
+                noi doi 🖤
+              </p>
+            </div>
+          </div>
+        </Reveal>
+
         {zile != null && (
-          <Reveal delay={450}>
+          <Reveal delay={560}>
             <div className="mt-12 flex flex-wrap items-center justify-center gap-4 sm:gap-8">
               {[
                 { n: config.luni, l: "luni" },
@@ -94,8 +133,22 @@ export default function Home() {
           </Reveal>
         )}
 
-        <Reveal delay={600}>
-          <div className="mt-16 animate-bounce text-2xl text-rose-deep/60">↓</div>
+        <Reveal delay={700}>
+          <div className="mt-14 animate-bounce text-2xl text-rose-deep/60">↓</div>
+        </Reveal>
+      </section>
+
+      {/* ─── CITAT ROMANTIC ─── */}
+      <section className="relative z-10 px-6 py-16">
+        <Reveal>
+          <blockquote className="mx-auto max-w-2xl text-center">
+            <p className="font-script text-4xl leading-snug text-rose-deep sm:text-5xl">
+              „În fiecare zi te aleg pe tine — și aș face-o de un milion de ori."
+            </p>
+            <p className="mt-4 font-serif text-lg italic text-wine/60">
+              💞 din toată inima mea 💞
+            </p>
+          </blockquote>
         </Reveal>
       </section>
 
@@ -108,7 +161,7 @@ export default function Home() {
         </Reveal>
         <Reveal delay={100}>
           <p className="mb-14 text-center font-serif text-lg italic text-wine/60">
-            opt luni adunate într-o mână de clipe
+            opt luni adunate într-o mână de clipe 📸
           </p>
         </Reveal>
         <div className="mx-auto grid max-w-5xl grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
@@ -209,10 +262,15 @@ export default function Home() {
         </Reveal>
         <Reveal delay={300}>
           <p className="mt-6 font-serif text-xl italic text-wine/70">
-            astăzi, mâine și în fiecare zi care urmează
+            astăzi, mâine și în fiecare zi care urmează 💕
           </p>
         </Reveal>
-        <Reveal delay={450}>
+        <Reveal delay={420}>
+          <p className="mt-4 font-serif text-2xl text-rose-deep">
+            ❤️ 🤍 ❤️ 🤍 ❤️
+          </p>
+        </Reveal>
+        <Reveal delay={560}>
           <p className="mt-16 font-serif text-sm uppercase tracking-[0.3em] text-wine/40">
             {config.numeIubita} &nbsp;•&nbsp; {config.luni} luni &nbsp;•&nbsp; ∞
           </p>

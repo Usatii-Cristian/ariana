@@ -24,18 +24,21 @@ export const config = {
   dataInceput: "2025-10-07",
 };
 
+// ── Poza principală (apare mare la deschidere) ──────────────────
+export const pozaPrincipala = "/poze/photo_2026-06-07_22-23-06.jpg";
+
 // ── Pozele din galerie ──────────────────────────────────────────
 // src = numele fișierului din public/poze/
 // text = ce scrie sub poză (poți schimba sau lăsa gol "")
 export const poze = [
-  { src: "/poze/foto1.jpg", text: "Prima noastră poză împreună" },
-  { src: "/poze/foto2.jpg", text: "Zâmbetul care mă topește" },
-  { src: "/poze/foto3.jpg", text: "Noi doi, restul lumii pe pauză" },
-  { src: "/poze/foto4.jpg", text: "Locul nostru preferat" },
-  { src: "/poze/foto5.jpg", text: "Râsul tău, melodia mea" },
-  { src: "/poze/foto6.jpg", text: "O zi pe care n-o uit niciodată" },
-  { src: "/poze/foto7.jpg", text: "Tu și cu mine, mereu" },
-  { src: "/poze/foto8.jpg", text: "Începutul a tot ce e frumos" },
+  { src: "/poze/photo_2026-06-07_22-23-06.jpg", text: "Tu și cu mine 🖤" },
+  { src: "/poze/photo_2026-06-07_22-19-23.jpg", text: "Eleganți, împreună" },
+  { src: "/poze/photo_2026-06-07_22-19-47.jpg", text: "Zâmbetul care mă topește" },
+  { src: "/poze/photo_2026-06-07_22-20-15.jpg", text: "Noi doi, restul lumii pe pauză" },
+  { src: "/poze/photo_2026-06-07_22-20-25.jpg", text: "Momentele noastre" },
+  { src: "/poze/photo_2026-06-07_22-20-40.jpg", text: "Râsul tău, melodia mea" },
+  { src: "/poze/photo_2026-06-07_22-20-52.jpg", text: "O zi de neuitat" },
+  { src: "/poze/photo_2026-06-07_22-22-56.jpg", text: "Începutul a tot ce e frumos" },
 ];
 
 // ── Motivele „de ce te iubesc" ──────────────────────────────────
