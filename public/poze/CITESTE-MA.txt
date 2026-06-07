@@ -1,0 +1,25 @@
+💛  POZELE TALE MERG AICI  💛
+
+Pune-ți pozele în acest folder (public/poze/) cu exact aceste nume:
+
+   foto1.jpg
+   foto2.jpg
+   foto3.jpg
+   foto4.jpg
+   foto5.jpg
+   foto6.jpg
+   foto7.jpg
+   foto8.jpg
+
+- Merg și .jpg și .png (dacă folosești .png, schimbă și extensia
+  în fișierul  app/felicitare/data.js , în lista "poze").
+- Cât timp o poză lipsește, în locul ei apare un chenar elegant
+  care îți spune ce fișier să adaugi — nu se strică nimic.
+- Vrei mai multe sau mai puține poze? Editează lista din
+  app/felicitare/data.js .
+
+Textele de sub poze, motivele, scrisoarea și tot restul
+le poți schimba tot din  app/felicitare/data.js .
+
+Muzică (opțional): pune un fișier  public/muzica.mp3
+și butonul 🎵 din colț îl va porni.
