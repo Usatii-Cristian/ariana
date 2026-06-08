@@ -43,10 +43,36 @@ export const poze = [
 
 // ── Motivele „de ce te iubesc" ──────────────────────────────────
 export const motive = [
-  { emoji: "🌅", titlu: "Pentru diminețile", text: "Cu tine, până și o zi obișnuită pare un răsărit." },
-  { emoji: "😂", titlu: "Pentru râsul tău", text: "E sunetul meu preferat din toată lumea asta." },
-  { emoji: "🤝", titlu: "Pentru sprijin", text: "Lângă tine simt că pot duce orice la capăt." },
-  { emoji: "🫶", titlu: "Pentru felul tău", text: "Pentru cum mă faci să mă simt acasă, oriunde am fi." },
+  {
+    emoji: "🌅",
+    titlu: "Pentru diminețile",
+    text: "Cu tine, până și o zi obișnuită pare un răsărit. Primul meu gând dimineața ești tu, iar ultimul, înainte să adorm, tot tu. Mă faci să iubesc viața așa simplă cum e — atâta timp cât ești în ea.",
+  },
+  {
+    emoji: "😍",
+    titlu: "Pentru zâmbetul tău",
+    text: "Ai un zâmbet care îmi liniștește toată ziua grea. Când îți luminează ochii, uit de orice grijă. Aș face orice, oricând, doar ca să-l văd din nou și din nou.",
+  },
+  {
+    emoji: "😂",
+    titlu: "Pentru râsul tău",
+    text: "Râsul tău e sunetul meu preferat din toată lumea asta. Cu tine glumele proaste devin amintiri și momentele banale se transformă în cele mai frumoase povești pe care le am.",
+  },
+  {
+    emoji: "🤗",
+    titlu: "Pentru îmbrățișări",
+    text: "În brațele tale am găsit locul în care mă simt cel mai în siguranță. Oricât de departe aș fi fost, o îmbrățișare de la tine înseamnă „ai ajuns acasă". Acolo vreau să rămân.",
+  },
+  {
+    emoji: "🤝",
+    titlu: "Pentru sprijin",
+    text: "Lângă tine simt că pot duce orice la capăt. Mă crezi când eu nu mai cred în mine, mă ții de mână la greu și te bucuri sincer de fiecare reușită a mea. Ești cel mai bun coechipier.",
+  },
+  {
+    emoji: "🫶",
+    titlu: "Pentru felul tău",
+    text: "Pentru cum mă faci să mă simt acasă, oriunde am fi. Pentru răbdarea ta, pentru grija din lucrurile mici, pentru felul unic în care iubești. Te iubesc exact așa cum ești — și nu mi-aș dori altfel.",
+  },
 ];
 
 // ── Mini cronologie (momente importante) ────────────────────────
