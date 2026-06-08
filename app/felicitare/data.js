@@ -21,7 +21,7 @@ export const config = {
   subtitlu: "8 luni cu tine — și parcă ne-am cunoscut de-o viață",
 
   // Data de când sunteți împreună (format: AAAA-LL-ZZ) — pentru contor
-  dataInceput: "2025-10-07",
+  dataInceput: "2025-10-08",
 };
 
 // ── Poza principală (apare mare la deschidere) ──────────────────
