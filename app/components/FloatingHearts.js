@@ -1,12 +1,22 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-// Inimi care plutesc lin în fundal
+// Inimi care plutesc lin în fundal (mai puține pe telefon, pentru fluiditate)
 export default function FloatingHearts({ count = 18 }) {
+  const [n, setN] = useState(count);
+
+  useEffect(() => {
+    const apply = () =>
+      setN(window.innerWidth < 640 ? Math.ceil(count / 2) : count);
+    apply();
+    window.addEventListener("resize", apply);
+    return () => window.removeEventListener("resize", apply);
+  }, [count]);
+
   const hearts = useMemo(
     () =>
-      Array.from({ length: count }, (_, i) => {
+      Array.from({ length: n }, (_, i) => {
         const left = Math.random() * 100;
         const size = 12 + Math.random() * 26;
         const duration = 9 + Math.random() * 12;
@@ -16,7 +26,7 @@ export default function FloatingHearts({ count = 18 }) {
         const symbol = symbols[i % symbols.length];
         return { left, size, duration, delay, opacity, symbol, id: i };
       }),
-    [count]
+    [n]
   );
 
   return (

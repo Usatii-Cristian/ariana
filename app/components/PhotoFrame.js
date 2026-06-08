@@ -19,6 +19,8 @@ export default function PhotoFrame({ src, text, rotate = 0 }) {
           <img
             src={src}
             alt={text || "Amintire"}
+            loading="lazy"
+            decoding="async"
             onError={() => setMissing(true)}
             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
           />

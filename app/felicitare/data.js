@@ -61,7 +61,7 @@ export const motive = [
   {
     emoji: "🤗",
     titlu: "Pentru îmbrățișări",
-    text: "În brațele tale am găsit locul în care mă simt cel mai în siguranță. Oricât de departe aș fi fost, o îmbrățișare de la tine înseamnă „ai ajuns acasă". Acolo vreau să rămân.",
+    text: "În brațele tale am găsit locul în care mă simt cel mai în siguranță. Oricât de departe aș fi fost, o îmbrățișare de la tine înseamnă «ai ajuns acasă». Acolo vreau să rămân.",
   },
   {
     emoji: "🤝",
@@ -81,6 +81,18 @@ export const momente = [
   { eticheta: "Luna 3", text: "Am știut că nu ești doar o etapă — ești destinația." },
   { eticheta: "Luna 5", text: "Ne-am construit micile noastre obiceiuri, glumele doar ale noastre." },
   { eticheta: "Luna 8", text: "Și azi te aleg din nou. Și mâine. Și în fiecare zi." },
+];
+
+// ── Mesaje scurte de dragoste (apar ca un colaj romantic) ───────
+export const mesaje = [
+  "Ești cel mai frumos lucru care mi s-a întâmplat.",
+  "Cu tine, «acasă» nu e un loc — ești tu.",
+  "Te-aș alege în fiecare viață, de fiecare dată.",
+  "Inima mea bate pe numele tău.",
+  "Lângă tine, timpul se oprește și totul are sens.",
+  "Tu ești visul din care nu vreau să mă trezesc.",
+  "Orice zi e mai frumoasă pentru că exiști tu în ea.",
+  "Te iubesc azi mai mult ca ieri și mai puțin ca mâine.",
 ];
 
 // ── Scrisoarea ──────────────────────────────────────────────────

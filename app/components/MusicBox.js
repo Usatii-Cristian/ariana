@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 
 // Melodie romantică generată în browser (Web Audio API).
 // Progresie în stil Canon (Pachelbel) — caldă, cutie muzicală + pad + reverb.
@@ -29,7 +29,7 @@ const BARS = [
 const BAR_TIME = 2.7; // lent, romantic
 const BEAT = BAR_TIME / 4;
 
-export default function MusicBox({ start }) {
+const MusicBox = forwardRef(function MusicBox({ start }, ref) {
   const [on, setOn] = useState(false);
   const ctxRef = useRef(null);
   const masterRef = useRef(null);
@@ -138,6 +138,9 @@ export default function MusicBox({ start }) {
     setOn(false);
   };
 
+  // permite pornirea muzicii direct din gestul de click (important pe telefon)
+  useImperativeHandle(ref, () => ({ play: startMusic, stop: stopMusic }));
+
   useEffect(() => {
     if (start && !on) startMusic();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -154,4 +157,6 @@ export default function MusicBox({ start }) {
       <span className={on ? "beat" : ""}>{on ? "🎵" : "🔇"}</span>
     </button>
   );
-}
+});
+
+export default MusicBox;

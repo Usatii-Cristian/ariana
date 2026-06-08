@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   config,
   poze,
   pozaPrincipala,
   motive,
+  mesaje,
   momente,
   scrisoare,
   final,
@@ -28,17 +29,24 @@ function zileImpreuna(dataInceput) {
 export default function Home() {
   const [deschis, setDeschis] = useState(false);
   const [zile, setZile] = useState(null);
+  const musicRef = useRef(null);
 
   useEffect(() => {
     setZile(zileImpreuna(config.dataInceput));
   }, []);
+
+  // pornește muzica în același gest cu deschiderea (autoplay garantat pe telefon)
+  const deschide = () => {
+    musicRef.current?.play();
+    setDeschis(true);
+  };
 
   const rotatii = [-4, 3, -2, 4, -3, 2, -4, 3];
 
   return (
     <main className="relative overflow-hidden bg-gradient-to-b from-cream via-blush/40 to-cream">
       <FloatingHearts count={30} />
-      <MusicBox start={deschis} />
+      <MusicBox ref={musicRef} start={deschis} />
 
       {/* ─── Intro: poza voastră + plic ─── */}
       {!deschis && (
@@ -60,14 +68,14 @@ export default function Home() {
               o mică surpriză te așteaptă... 💌
             </p>
             <button
-              onClick={() => setDeschis(true)}
+              onClick={deschide}
               className="group relative inline-flex items-center gap-3 rounded-full bg-white px-8 py-4 font-serif text-lg font-medium text-rose-deep shadow-2xl transition hover:scale-105"
             >
               <span className="text-2xl">💌</span>
               Deschide felicitarea
             </button>
             <p className="mt-6 font-serif text-sm text-white/70">
-              🎵 cu sonor — dă-i drumul tare
+              🎵 cântă o melodie — dă-i drumul tare la volum
             </p>
           </div>
         </div>
@@ -102,6 +110,9 @@ export default function Home() {
               <img
                 src={pozaPrincipala}
                 alt="Noi doi"
+                loading="eager"
+                decoding="async"
+                fetchPriority="high"
                 className="h-auto w-[16rem] rounded-[2px] object-cover sm:w-[20rem]"
               />
               <p className="pt-3 font-script text-3xl text-rose-deep">
@@ -152,6 +163,27 @@ export default function Home() {
             </p>
           </blockquote>
         </Reveal>
+      </section>
+
+      {/* ─── MESAJE DE DRAGOSTE ─── */}
+      <section className="relative z-10 px-6 py-16">
+        <Reveal>
+          <h2 className="mb-12 text-center font-serif text-4xl font-semibold text-wine sm:text-5xl">
+            Câteva vorbe din inimă 💞
+          </h2>
+        </Reveal>
+        <div className="mx-auto grid max-w-4xl grid-cols-1 gap-5 sm:grid-cols-2">
+          {mesaje.map((t, i) => (
+            <Reveal key={i} delay={(i % 2) * 100}>
+              <div className="flex h-full items-center gap-4 rounded-2xl bg-white/70 p-6 shadow-sm ring-1 ring-rose/15 backdrop-blur transition hover:-translate-y-1 hover:shadow-md">
+                <span className="text-2xl">{["💕", "🌹", "💗", "💖", "🤍", "✨", "🌸", "❤️"][i % 8]}</span>
+                <p className="font-serif text-lg italic leading-snug text-wine/85">
+                  {t}
+                </p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
       </section>
 
       {/* ─── GALERIA DE POZE ─── */}
