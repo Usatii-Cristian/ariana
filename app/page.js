@@ -15,12 +15,14 @@ import Reveal from "./components/Reveal";
 import PhotoFrame from "./components/PhotoFrame";
 import MusicBox from "./components/MusicBox";
 
-// Câte zile sunteți împreună
+// Câte zile sunteți împreună (calcul pe zile calendaristice, fără probleme de fus orar)
 function zileImpreuna(dataInceput) {
-  const start = new Date(dataInceput);
-  if (isNaN(start)) return null;
-  const diff = Date.now() - start.getTime();
-  return Math.max(0, Math.floor(diff / 86400000));
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dataInceput);
+  if (!m) return null;
+  const startUTC = Date.UTC(+m[1], +m[2] - 1, +m[3]);
+  const now = new Date();
+  const todayUTC = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+  return Math.max(0, Math.round((todayUTC - startUTC) / 86400000));
 }
 
 export default function Home() {

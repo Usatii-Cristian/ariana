@@ -2,26 +2,31 @@
 
 import { useEffect, useRef, useState } from "react";
 
-// Mică melodie romantică generată în browser (Web Audio API).
-// Cântă în buclă, blând, ca un pian de cutie muzicală.
-// Pornește la prima interacțiune (când se deschide felicitarea).
+// Melodie romantică generată în browser (Web Audio API).
+// Progresie în stil Canon (Pachelbel) — caldă, cutie muzicală + pad + reverb.
+// Cântă în buclă, blând. Pornește când se deschide felicitarea.
 
-const FREQ = {
-  G2: 98.0, A2: 110.0, B2: 123.47,
+const F = {
+  E2: 82.41, F2: 87.31, G2: 98.0, A2: 110.0, B2: 123.47,
   C3: 130.81, D3: 146.83, E3: 164.81, F3: 174.61, G3: 196.0, A3: 220.0, B3: 246.94,
   C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23, G4: 392.0, A4: 440.0, B4: 493.88,
-  C5: 523.25, D5: 587.33, E5: 659.25,
+  C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, G5: 783.99,
 };
 
-// Progresie romantică I–V–vi–IV (Do–Sol–lam–Fa)
+// Canon în Do: C – G – Am – Em – F – C – F – G
+// fiecare bar: bas (o notă), pad (acord ținut), arpegiu de cutie muzicală
 const BARS = [
-  { chord: ["C3", "E3", "G3"], melody: ["E4", "G4", "C5", "G4"] },
-  { chord: ["G2", "B2", "D3"], melody: ["D4", "G4", "B4", "G4"] },
-  { chord: ["A2", "C3", "E3"], melody: ["C5", "A4", "E4", "A4"] },
-  { chord: ["F3", "A3", "C4"], melody: ["A4", "C5", "F4", "C5"] },
+  { bass: "C3", pad: ["C3", "E3", "G3"], arp: ["C4", "E4", "G4", "C5"] },
+  { bass: "G2", pad: ["G3", "B3", "D4"], arp: ["G4", "B4", "D5", "B4"] },
+  { bass: "A2", pad: ["A3", "C4", "E4"], arp: ["A4", "C5", "E5", "C5"] },
+  { bass: "E2", pad: ["E3", "G3", "B3"], arp: ["E4", "G4", "B4", "E5"] },
+  { bass: "F2", pad: ["F3", "A3", "C4"], arp: ["F4", "A4", "C5", "A4"] },
+  { bass: "C3", pad: ["C3", "E3", "G3"], arp: ["C4", "E4", "G4", "E5"] },
+  { bass: "F2", pad: ["F3", "A3", "C4"], arp: ["F4", "A4", "C5", "F5"] },
+  { bass: "G2", pad: ["G3", "B3", "D4"], arp: ["G4", "B4", "D5", "G5"] },
 ];
 
-const BAR_TIME = 2.4; // secunde per acord (lent, romantic)
+const BAR_TIME = 2.7; // lent, romantic
 const BEAT = BAR_TIME / 4;
 
 export default function MusicBox({ start }) {
@@ -38,51 +43,65 @@ export default function MusicBox({ start }) {
     const ctx = new Ctx();
 
     const master = ctx.createGain();
-    master.gain.value = 0.0;
+    master.gain.value = 0.0001;
 
-    // reverb simplu prin delay cu feedback (efect de „spațiu")
+    // reverb amplu prin delay cu feedback (senzație de „spațiu" cald)
     const delay = ctx.createDelay();
-    delay.delayTime.value = 0.28;
+    delay.delayTime.value = 0.33;
     const fb = ctx.createGain();
-    fb.gain.value = 0.25;
+    fb.gain.value = 0.32;
     const wet = ctx.createGain();
-    wet.gain.value = 0.35;
+    wet.gain.value = 0.42;
+    // filtru blând ca să taie ascuțișul (mai cald)
+    const tone = ctx.createBiquadFilter();
+    tone.type = "lowpass";
+    tone.frequency.value = 2600;
+
+    master.connect(tone);
+    tone.connect(ctx.destination);
+    tone.connect(delay);
     delay.connect(fb);
     fb.connect(delay);
-    master.connect(delay);
     delay.connect(wet);
     wet.connect(ctx.destination);
-    master.connect(ctx.destination);
 
     ctxRef.current = ctx;
     masterRef.current = master;
     return ctx;
   };
 
-  const note = (ctx, freq, t, dur, peak, type) => {
-    const osc = ctx.createOscillator();
+  // o notă cu envelope (atac/stingere) și opțional 2 oscilatoare ușor dezacordate
+  const note = (ctx, freq, t, dur, peak, type, attack = 0.04, warm = false) => {
     const g = ctx.createGain();
-    osc.type = type;
-    osc.frequency.value = freq;
-    // envelope blând (atac scurt, stingere lungă) — sunet de cutie muzicală
     g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(peak, t + 0.04);
+    g.gain.exponentialRampToValueAtTime(peak, t + attack);
     g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    osc.connect(g);
     g.connect(masterRef.current);
-    osc.start(t);
-    osc.stop(t + dur + 0.05);
+
+    const make = (detune) => {
+      const osc = ctx.createOscillator();
+      osc.type = type;
+      osc.frequency.value = freq;
+      osc.detune.value = detune;
+      osc.connect(g);
+      osc.start(t);
+      osc.stop(t + dur + 0.05);
+    };
+    make(0);
+    if (warm) make(6); // a doua voce, ușor dezacordată → căldură (chorus)
   };
 
   const scheduleBar = (ctx, bar, time) => {
     const b = BARS[bar % BARS.length];
-    // acord (note ținute, blânde, octavă joasă)
-    b.chord.forEach((n) =>
-      note(ctx, FREQ[n], time, BAR_TIME * 0.95, 0.06, "sine")
+    // bas blând, ținut
+    note(ctx, F[b.bass], time, BAR_TIME * 0.98, 0.05, "sine", 0.18);
+    // pad cald, ținut (acord)
+    b.pad.forEach((n) =>
+      note(ctx, F[n], time, BAR_TIME * 0.97, 0.035, "sine", 0.35)
     );
-    // melodie (note dulci pe pătrimi)
-    b.melody.forEach((n, i) =>
-      note(ctx, FREQ[n], time + i * BEAT, BEAT * 1.6, 0.13, "triangle")
+    // arpegiu de cutie muzicală (melodia), cald
+    b.arp.forEach((n, i) =>
+      note(ctx, F[n], time + i * BEAT, BEAT * 1.9, 0.12, "triangle", 0.02, true)
     );
   };
 
@@ -91,19 +110,19 @@ export default function MusicBox({ start }) {
     if (ctx.state === "suspended") ctx.resume();
     masterRef.current.gain.cancelScheduledValues(ctx.currentTime);
     masterRef.current.gain.setValueAtTime(0.0001, ctx.currentTime);
-    masterRef.current.gain.exponentialRampToValueAtTime(0.5, ctx.currentTime + 1.2);
-    nextTimeRef.current = ctx.currentTime + 0.1;
+    masterRef.current.gain.exponentialRampToValueAtTime(0.5, ctx.currentTime + 1.6);
+    nextTimeRef.current = ctx.currentTime + 0.15;
 
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
       const c = ctxRef.current;
       if (!c) return;
-      while (nextTimeRef.current < c.currentTime + 0.3) {
+      while (nextTimeRef.current < c.currentTime + 0.4) {
         scheduleBar(c, barRef.current, nextTimeRef.current);
         nextTimeRef.current += BAR_TIME;
         barRef.current += 1;
       }
-    }, 60);
+    }, 70);
     setOn(true);
   };
 
@@ -112,14 +131,13 @@ export default function MusicBox({ start }) {
     if (ctx && masterRef.current) {
       masterRef.current.gain.cancelScheduledValues(ctx.currentTime);
       masterRef.current.gain.setValueAtTime(masterRef.current.gain.value, ctx.currentTime);
-      masterRef.current.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
+      masterRef.current.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.6);
     }
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = null;
     setOn(false);
   };
 
-  // pornește automat când se deschide felicitarea
   useEffect(() => {
     if (start && !on) startMusic();
     // eslint-disable-next-line react-hooks/exhaustive-deps
